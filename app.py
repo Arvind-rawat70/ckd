@@ -1,12 +1,11 @@
 import streamlit as st
 import joblib
-import numpy as np
+import pandas as pd
 
 # Load trained model
 model = joblib.load("ckd_model.pkl")
 
 st.title("🩺 Chronic Kidney Disease Prediction App")
-
 st.write("Enter patient values to predict CKD")
 
 # Input fields
@@ -26,7 +25,20 @@ pe = st.selectbox("Pedal Edema (pe)", [0, 1])
 # Predict button
 if st.button("Predict CKD"):
 
-    input_data = np.array([[sc, bu, al, hemo, sg, bgr, pcv, pot, dm, htn, pe]])
+    # ✅ Create DataFrame with exact training column names
+    input_data = pd.DataFrame([{
+        "sc": sc,
+        "bu": bu,
+        "al": al,
+        "hemo": hemo,
+        "sg": sg,
+        "bgr": bgr,
+        "pcv": pcv,
+        "pot": pot,
+        "dm": dm,
+        "htn": htn,
+        "pe": pe
+    }])
 
     prediction = model.predict(input_data)
 
